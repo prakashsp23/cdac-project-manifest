@@ -1,0 +1,47 @@
+# Frontend: separate pod, 1 replica. Fits t3.small with backend pod.
+# Jenkins replaces DOCKER_HUB_PLACEHOLDER and IMAGE_TAG_PLACEHOLDER on push.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: carservice
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: DOCKER_HUB_PLACEHOLDER/carservice-frontend:IMAGE_TAG_PLACEHOLDER
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              memory: "48Mi"
+              cpu: "50m"
+            limits:
+              memory: "96Mi"
+              cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: carservice
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+  type: NodePort
