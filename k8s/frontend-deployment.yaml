@@ -1,5 +1,5 @@
 # Frontend: separate pod, 1 replica. Fits t3.small with backend pod.
-# Jenkins replaces ryuk6009 and latest on push.
+# Jenkins replaces DOCKER_HUB_PLACEHOLDER and IMAGE_TAG_PLACEHOLDER on push.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,11 +19,14 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ryuk6009/carservice-frontend:latest
+          image: DOCKER_HUB_PLACEHOLDER/carservice-frontend:IMAGE_TAG_PLACEHOLDER
           imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 80
+          envFrom:
+            - secretRef:
+                name: frontend-env
           resources:
             requests:
               memory: "48Mi"
