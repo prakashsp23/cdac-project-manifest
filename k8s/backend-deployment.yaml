@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ryuk6009/carservice-backend:22
+          image: ryuk6009/carservice-backend:23
           imagePullPolicy: Always
           ports:
             - name: http
